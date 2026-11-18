@@ -1,0 +1,16 @@
+# Dependencias y compilados de TypeScript
+node_modules/
+backend/dist/
+
+# Variables de entorno
+.env
+
+# SEGURIDAD SSL - NUNCA SUBIR LLAVES PRIVADAS
+*.key
+*.pfx
+*.p12
+*-key.pem
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
