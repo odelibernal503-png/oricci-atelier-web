@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oricci Atelier Dulce y Salado | Repostería Artesanal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="hero">
+    <h1>Oricci Atelier Dulce y Salado</h1>
+    <p>Repostería artesanal bajo pedido: cupcakes, galletas gourmet, mini pasteles y postres en vaso.</p>
+  </header>
+
+  <main class="contenedor">
+
+    <!-- SECCIÓN 1: CATÁLOGO DE POSTRES -->
+    <section class="seccion">
+      <h2>Nuestro Catálogo Artesanal</h2>
+
+      <div class="filtros">
+        <button type="button" class="btn-filtro activo" data-categoria="todos">Todos</button>
+        <button type="button" class="btn-filtro" data-categoria="cupcakes">Cupcakes</button>
+        <button type="button" class="btn-filtro" data-categoria="galletas">Galletas Gourmet</button>
+        <button type="button" class="btn-filtro" data-categoria="pasteles">Mini Pasteles</button>
+        <button type="button" class="btn-filtro" data-categoria="vasos">Postres en Vaso</button>
+      </div>
+
+      <!-- Aquí Gustavo inyectará las tarjetas desde /api/productos -->
+      <div id="grid-productos" class="grid-productos">
+        <p>Cargando catálogo de postres...</p>
+      </div>
+    </section>
+
+    <!-- SECCIÓN 2: FORMULARIO DE PEDIDOS PERSONALIZADOS -->
+    <section class="seccion">
+      <h2>Solicitar Pedido Personalizado</h2>
+
+      <form id="form-pedido" class="formulario">
+        <div class="campo">
+          <label for="cliente">Nombre completo *</label>
+          <input type="text" id="cliente" name="cliente" required placeholder="Ej. María Fernanda Gómez">
+        </div>
+
+        <div class="campo">
+          <label for="telefono">Teléfono / WhatsApp *</label>
+          <input type="tel" id="telefono" name="telefono" required placeholder="Ej. 7890-1234">
+        </div>
+
+        <div class="campo">
+          <label for="tipoPostre">Tipo de postre *</label>
+          <select id="tipoPostre" name="tipoPostre" required>
+            <option value="Cupcakes">Cupcakes Artesanales</option>
+            <option value="Galletas Gourmet">Galletas Gourmet</option>
+            <option value="Mini Pastel">Mini Pastel Personalizado</option>
+            <option value="Postre en Vaso">Postre en Vaso</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label for="sabor">Sabor *</label>
+          <input type="text" id="sabor" name="sabor" required placeholder="Ej. Vainilla con fresa">
+        </div>
+
+        <div class="campo">
+          <label for="cantidad">Cantidad *</label>
+          <input type="number" id="cantidad" name="cantidad" min="1" value="1" required>
+        </div>
+
+        <div class="campo">
+          <label for="fechaEntrega">Fecha de entrega *</label>
+          <input type="date" id="fechaEntrega" name="fechaEntrega" required>
+        </div>
+
+        <div class="campo campo-ancho">
+          <label for="dedicatoria">Dedicatoria o detalles especiales</label>
+          <textarea id="dedicatoria" name="dedicatoria" rows="3" placeholder="Ej. Feliz cumpleaños, Sofía"></textarea>
+        </div>
+
+        <button type="submit" class="btn-enviar">Enviar pedido</button>
+      </form>
+
+      <!-- Aquí se mostrará la confirmación al cliente -->
+      <div id="respuesta-pedido" class="mensaje-estado" role="status" aria-live="polite"></div>
+    </section>
+
+  </main>
+
+  <footer class="pie">
+    <p>Oricci Atelier Dulce y Salado · Repostería artesanal bajo pedido</p>
+  </footer>
+
+  <!--Script de integración con la API-->
+  <script src="app.js"></script>
+</body>
+</html>
