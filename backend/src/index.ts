@@ -1,9 +1,11 @@
 import express, { Request, Response } from 'express';
+import productosRouter from './routes/productos';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use('/api/productos', productosRouter);
 
 app.get('/health', (req: Request, res: Response) => {
     res.status(200).json({
