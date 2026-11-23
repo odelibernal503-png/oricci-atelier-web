@@ -117,7 +117,7 @@ sudo systemctl restart apache2
 
 | Sitio con candado HTTPS | API vía Reverse Proxy |
 | :---: | :---: |
-| ![HTTPS](docs/evidencia-https.png) | ![API](docs/evidencia-api.png) |
+| ![HTTPS](docs/01_web_fetch_https.png) | ![API](docs/02_api_https_certificado.png) |
 
 ## 🔒 Seguridad
 
