@@ -73,19 +73,22 @@ body {
     gap: 1rem;
 }
 
-.tarjeta-postre {
+.tarjeta-postre,
+.producto-card {
     border: 1px solid #e7e5e4;
     border-radius: 8px;
     padding: 1rem;
     background: #fffaf5;
 }
 
-.tarjeta-postre h3 {
+.tarjeta-postre h3,
+.producto-card h3 {
     color: #7c2d12;
     margin-bottom: 0.3rem;
 }
 
-.tarjeta-postre .precio {
+.tarjeta-postre .precio,
+.producto-card .precio {
     font-weight: 700;
     color: #15803d;
     margin-top: 0.6rem;
@@ -152,4 +155,23 @@ body {
     padding: 1.5rem;
     color: #78716c;
     font-size: 0.9rem;
+}
+
+.categoria-badge {
+    display: inline-block;
+    background: #fed7aa;
+    color: #7c2d12;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    margin-bottom: 0.5rem;
+}
+
+.producto-card img {
+    width: 100%;
+    border-radius: 6px;
+    margin-bottom: 0.6rem;
 }

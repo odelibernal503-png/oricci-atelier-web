@@ -35,3 +35,94 @@ El sistema separa el contenido estático del procesamiento dinámico mediante un
                              │
                              ▼
                  [ Respuestas JSON: /api/productos, /api/pedidos, /health ]
+```
+
+---
+
+## 📁 Estructura del Repositorio
+
+```text
+oricci-atelier-web/
+├── backend/    # API Express + TypeScript + Dockerfile
+├── frontend/   # index.html, styles.css, app.js (sitio estático)
+├── config/     # oricci-ssl.conf (VirtualHost de Apache con HTTPS y ProxyPass)
+└── docs/       # Capturas de evidencia (HTTPS y API)
+```
+
+## 🔌 Endpoints de la API
+
+| Método | Ruta | Descripción |
+| :--- | :--- | :--- |
+| GET | `/health` | Estado del contenedor |
+| GET | `/api/productos` | Catálogo completo de postres |
+| GET | `/api/productos/:categoria` | Filtra por `cupcakes`, `galletas`, `pasteles` o `vasos` (404 si no hay registros) |
+| GET | `/api/pedidos` | Lista los pedidos registrados |
+| POST | `/api/pedidos` | Registra un pedido personalizado (400 si faltan campos obligatorios) |
+
+## 🚀 Cómo levantar el proyecto (Ubuntu Server + Apache)
+
+**1. Clonar el repositorio**
+
+```bash
+git clone https://github.com/odelibernal503-png/oricci-atelier-web.git
+cd oricci-atelier-web
+```
+
+**2. Levantar el contenedor del backend (puerto 3000)**
+
+```bash
+cd backend
+docker build -t oricci-backend .
+docker run -d -p 3000:3000 --name oricci-api oricci-backend
+curl http://localhost:3000/health
+cd ..
+```
+
+**3. Copiar el frontend a Apache**
+
+```bash
+sudo mkdir -p /var/www/oricci
+sudo cp -r frontend/* /var/www/oricci/
+```
+
+**4. Generar el certificado SSL local con mkcert**
+
+```bash
+mkcert -install
+sudo mkdir -p /etc/apache2/ssl
+sudo mkcert -cert-file /etc/apache2/ssl/oricci.local.pem \
+            -key-file  /etc/apache2/ssl/oricci.local-key.pem \
+            oricci.local localhost 127.0.0.1
+echo "127.0.0.1 oricci.local" | sudo tee -a /etc/hosts
+```
+
+> La llave privada (`oricci.local-key.pem`) **no** se sube al repositorio; está bloqueada en `.gitignore`.
+
+**5. Activar Apache con HTTPS y Reverse Proxy**
+
+```bash
+sudo a2enmod ssl proxy proxy_http rewrite headers
+sudo cp config/oricci-ssl.conf /etc/apache2/sites-available/
+sudo a2ensite oricci-ssl.conf
+sudo systemctl restart apache2
+```
+
+**6. Probar**
+
+- Sitio: https://oricci.local
+- API a través del proxy: https://oricci.local/api/productos
+- Salud: https://oricci.local/health
+
+## 🖼️ Evidencias
+
+| Sitio con candado HTTPS | API vía Reverse Proxy |
+| :---: | :---: |
+| ![HTTPS](docs/evidencia-https.png) | ![API](docs/evidencia-api.png) |
+
+## 🔒 Seguridad
+
+El Reverse Proxy (`ProxyPass /api/`) permite que el navegador consuma la API con rutas relativas bajo HTTPS, evitando contenido mixto. Ninguna llave privada (`*.key`, `*-key.pem`, `*.pfx`) forma parte del repositorio.
+
+## ⏭️ Fuera de alcance en esta fase
+
+Clúster de 3 nodos con Docker Compose y balanceador Nginx (Fases 3 y 4).
