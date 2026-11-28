@@ -6,7 +6,10 @@ const app = express();
 const PORT = 3000;
 
 app.use(express.json());
-
+app.use((_req, res, next) => {
+    res.setHeader('X-Served-By', process.env.NODE_ID || 'local');
+    next();
+});
 // Endpoint de salud (Edgar)
 app.get('/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok', service: 'oricci-backend' });
