@@ -2,6 +2,7 @@
 // Oricci Atelier Dulce y Salado - Lógica Frontend (app.js)
 // Responsable: Gustavo Nahum Márquez Cruz (#6)
 // =========================================================================
+
 document.addEventListener('DOMContentLoaded', () => {
   const contenedorProductos = document.getElementById('grid-productos');
   const botonesFiltro = document.querySelectorAll('[data-categoria]');
@@ -111,4 +112,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Al abrir la página, cargar todos los productos
   cargarProductos();
+});
+
+// =========================================================================
+// FASE 3: MOSTRAR QUÉ NODO DEL CLÚSTER ESTÁ RESPONDIENDO (GET /health)
+// =========================================================================
+
+async function actualizarEstadoNodo() {
+  const dotEl = document.getElementById('cluster-status-dot');
+  const nameEl = document.getElementById('cluster-node-name');
+  if (!dotEl || !nameEl) return;
+
+  try {
+    const response = await fetch('/health', { cache: 'no-store' });
+    if (!response.ok) throw new Error('Nodo no disponible');
+
+    const headerNode = response.headers.get('X-Served-By');
+    const data = await response.json();
+    const activeNode = data.node || headerNode || 'nodo-activo';
+
+    dotEl.style.backgroundColor = '#16a34a';
+    nameEl.textContent = activeNode;
+  } catch (_error) {
+    dotEl.style.backgroundColor = '#d97706';
+    nameEl.textContent = 'Reconectando clúster...';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  actualizarEstadoNodo();
+  setInterval(actualizarEstadoNodo, 5000);
 });
